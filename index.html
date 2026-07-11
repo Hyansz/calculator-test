@@ -1,21 +1,685 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator Panel</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CLT Panel Calculator</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ["Inter", "system-ui", "sans-serif"],
+                        },
+                        colors: {
+                            wood: {
+                                50: "#fdf8f0",
+                                100: "#f9eddb",
+                                200: "#f0d5b0",
+                                300: "#e5b87a",
+                                400: "#d99a4a",
+                                500: "#c98530",
+                                600: "#b06c24",
+                                700: "#8b5420",
+                                800: "#724421",
+                                900: "#5f391f",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            input[type="radio"]:checked + label {
+                background: linear-gradient(135deg, #c98530, #a86b20);
+                color: #fff;
+                border-color: transparent;
+                box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            }
+        </style>
+    </head>
+    <body class="min-h-screen font-sans bg-[#f8f6f3] antialiased">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Header -->
+            <header class="mb-6">
+                <div class="flex items-center gap-3 mb-1">
+                    <div
+                        class="w-9 h-9 rounded-lg bg-gradient-to-br from-wood-400 to-wood-600 flex items-center justify-center shadow-sm"
+                    >
+                        <svg
+                            class="w-4 h-4 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                            />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1
+                            class="text-lg font-bold text-gray-900 leading-tight"
+                        >
+                            CLT Panel Calculator
+                        </h1>
+                        <p class="text-[11px] text-gray-400 font-medium">
+                            Cross-Laminated Timber Floor Panel Properties
+                            &mdash; proHolz Vol1 Sec 4.1.3 &amp; 4.2
+                        </p>
+                    </div>
+                </div>
+            </header>
 
-    <!-- CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container py-4">
-        <h1 class="mb-4">Calculator Panel</h1>
-        <!-- Write Input On Here -->
-    </div>
+            <!-- Parameters -->
+            <div
+                class="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.06)] border border-black/5 mb-3"
+            >
+                <div
+                    class="flex items-center justify-between px-5 py-3.5 border-b border-black/5"
+                >
+                    <div class="flex items-center gap-2">
+                        <svg
+                            class="w-3.5 h-3.5 text-wood-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                            />
+                        </svg>
 
-    <!-- Script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="calculator.js"></script>
-</body>
+                        <span
+                            class="text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                        >
+                            Parameters & Method
+                        </span>
+                    </div>
+
+                    <div
+                        class="inline-flex rounded-lg overflow-hidden border border-gray-200"
+                    >
+                        <input
+                            type="radio"
+                            name="method"
+                            id="methodShear"
+                            value="shear-analogy"
+                            checked
+                            onchange="onMethodChange(this.value)"
+                            class="sr-only"
+                        />
+
+                        <label
+                            for="methodShear"
+                            class="px-5 py-2 text-[13px] font-semibold cursor-pointer text-gray-500 bg-gray-50 border-r border-gray-200 transition-all"
+                        >
+                            Shear Analogy
+                        </label>
+
+                        <input
+                            type="radio"
+                            name="method"
+                            id="methodGamma"
+                            value="gamma"
+                            onchange="onMethodChange(this.value)"
+                            class="sr-only"
+                        />
+
+                        <label
+                            for="methodGamma"
+                            class="px-5 py-2 text-[13px] font-semibold cursor-pointer text-gray-500 bg-gray-50 transition-all"
+                        >
+                            Gamma
+                        </label>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div
+                        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-3"
+                    >
+                        <div>
+                            <label
+                                class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5"
+                                >Material Grade</label
+                            >
+                            <select
+                                id="gradeSelect"
+                                onchange="onGradeChange(this.value)"
+                                class="w-full px-3 py-2.5 border-[1.5px] border-gray-200 rounded-[9px] text-[13px] font-medium text-gray-800 bg-gray-50 outline-none transition-all hover:border-gray-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 focus:bg-white"
+                            ></select>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5"
+                                >Layers</label
+                            >
+                            <select
+                                id="layerCountSelect"
+                                onchange="onLayerCountChange(this.value)"
+                                class="w-full px-3 py-2.5 border-[1.5px] border-gray-200 rounded-[9px] text-[13px] font-medium text-gray-800 bg-gray-50 outline-none transition-all hover:border-gray-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 focus:bg-white"
+                            ></select>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5"
+                                >Thickness (mm)</label
+                            >
+                            <input
+                                type="number"
+                                value="35"
+                                min="1"
+                                onchange="onThicknessChange(this.value)"
+                                id="thicknessInput"
+                                class="w-full px-3 py-2.5 border-[1.5px] border-gray-200 rounded-[9px] text-[13px] font-medium text-gray-800 bg-gray-50 outline-none transition-all hover:border-gray-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 focus:bg-white"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5"
+                                >beff (mm)</label
+                            >
+                            <input
+                                type="number"
+                                value="1000"
+                                min="1"
+                                onchange="onBeffChange(this.value)"
+                                class="w-full px-3 py-2.5 border-[1.5px] border-gray-200 rounded-[9px] text-[13px] font-medium text-gray-800 bg-gray-50 outline-none transition-all hover:border-gray-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 focus:bg-white"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5"
+                                >Span (m)</label
+                            >
+                            <input
+                                type="number"
+                                value="5"
+                                min="0.1"
+                                step="0.1"
+                                onchange="onLengthChange(this.value)"
+                                class="w-full px-3 py-2.5 border-[1.5px] border-gray-200 rounded-[9px] text-[13px] font-medium text-gray-800 bg-gray-50 outline-none transition-all hover:border-gray-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 focus:bg-white"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer Configuration + Metrics -->
+            <div
+                class="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.06)] border border-black/5 mb-4"
+            >
+                <div
+                    class="px-5 py-3.5 border-b border-black/5 flex items-center gap-2"
+                >
+                    <svg
+                        class="w-3.5 h-3.5 text-wood-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 10h16M4 14h16M4 18h16"
+                        />
+                    </svg>
+                    <span
+                        class="text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                        >Layer Configuration</span
+                    >
+                    <span
+                        class="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-wood-100 text-wood-700"
+                        id="layerCountLabel"
+                        >5 layers</span
+                    >
+                </div>
+                <div class="p-5">
+                    <div class="flex flex-col lg:flex-row gap-5">
+                        <!-- Table -->
+                        <div class="flex-1 min-w-0">
+                            <table
+                                class="w-full border-separate border-spacing-0"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="px-3 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100 first:rounded-tl-[10px] last:rounded-tr-[10px]"
+                                            style="width: 55px"
+                                        >
+                                            Layer
+                                        </th>
+                                        <th
+                                            class="px-3 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                            style="width: 120px"
+                                        >
+                                            Thickness
+                                        </th>
+                                        <th
+                                            class="px-3 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                            style="width: 140px"
+                                        >
+                                            Grade
+                                        </th>
+                                        <th
+                                            class="px-3 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b w-1/5 border-gray-100 last:rounded-tr-[10px]"
+                                        >
+                                            Orientation
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="layerTableBody"></tbody>
+                            </table>
+                        </div>
+                        <!-- Metrics Sidebar -->
+                        <div
+                            class="lg:w-1/3 flex flex-col gap-3 flex-shrink-0"
+                            id="metricsSidebar"
+                        >
+                            <div
+                                class="flex-1 p-5 rounded-xl bg-gradient-to-br from-wood-50 to-wood-200 border border-wood-200/40"
+                            >
+                                <div
+                                    class="text-[12px] font-semibold text-wood-500 uppercase tracking-wider mb-1"
+                                >
+                                    Total Thickness
+                                </div>
+                                <div
+                                    class="text-4xl font-bold text-gray-900 leading-tight"
+                                    id="totalThickness"
+                                >
+                                    -
+                                </div>
+                            </div>
+                            <div
+                                class="flex-1 p-5 rounded-xl bg-gradient-to-br from-wood-50 to-wood-200 border border-wood-200/40"
+                            >
+                                <div
+                                    class="text-[12px] font-semibold text-wood-500 uppercase tracking-wider mb-1"
+                                >
+                                    (EI)<sub>eff</sub>
+                                </div>
+                                <div
+                                    class="text-2xl font-bold text-gray-900 leading-tight"
+                                    id="eiEffValue"
+                                >
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error -->
+            <div id="errorMsg"></div>
+
+            <!-- Result Section -->
+            <div id="resultSection" style="display: none">
+                <!-- Visualization -->
+                <div
+                    class="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.06)] border border-black/5 mb-4"
+                >
+                    <div
+                        class="px-5 py-3.5 border-b border-black/5 flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-3.5 h-3.5 text-wood-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                            />
+                        </svg>
+                        <span
+                            class="text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                            >Cross-Section</span
+                        >
+                        <span
+                            class="ml-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-wood-100 text-wood-700"
+                            >Visual</span
+                        >
+                    </div>
+                    <div class="p-5">
+                        <div
+                            class="flex flex-col lg:flex-row gap-6 items-start"
+                        >
+                            <div
+                                class="flex-shrink-0 bg-gray-50 rounded-xl p-4 border border-gray-100"
+                            >
+                                <svg
+                                    id="panelSvg"
+                                    width="440"
+                                    height="340"
+                                ></svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div
+                                    class="flex flex-wrap items-center gap-4 mb-3"
+                                >
+                                    <div class="flex items-center gap-1.5">
+                                        <span
+                                            class="inline-block w-3.5 h-3.5 rounded"
+                                            style="
+                                                background: repeating-linear-gradient(
+                                                    0deg,
+                                                    #e0b87a,
+                                                    #e0b87a 2px,
+                                                    #9a7030 2px,
+                                                    #9a7030 4px
+                                                );
+                                            "
+                                        ></span>
+                                        <span
+                                            class="text-[11px] font-medium text-gray-500"
+                                            >0&deg; (longitudinal)</span
+                                        >
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span
+                                            class="inline-block w-3.5 h-3.5 rounded"
+                                            style="
+                                                background: repeating-linear-gradient(
+                                                    0deg,
+                                                    #c89050,
+                                                    #c89050 2px,
+                                                    #8a6020 2px,
+                                                    #8a6020 4px
+                                                );
+                                            "
+                                        ></span>
+                                        <span
+                                            class="text-[11px] font-medium text-gray-500"
+                                            >90&deg; (transverse)</span
+                                        >
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span
+                                            class="inline-block w-5 h-0.5 rounded-full bg-red-400"
+                                        ></span>
+                                        <span
+                                            class="text-[11px] font-medium text-gray-500"
+                                            >Neutral axis</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    id="panelInfo"
+                                    class="text-sm text-gray-500 leading-relaxed"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Properties -->
+                <div
+                    class="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.06)] border border-black/5 mb-4"
+                >
+                    <div
+                        class="px-5 py-3.5 border-b border-black/5 flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-3.5 h-3.5 text-wood-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+                            />
+                        </svg>
+                        <span
+                            class="text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                            >Section Properties</span
+                        >
+                    </div>
+                    <div class="p-0">
+                        <div class="overflow-x-auto">
+                            <table
+                                class="w-full border-separate border-spacing-0"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100 first:rounded-tl-[10px]"
+                                        >
+                                            [-]
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            t<sub>i</sub> (mm)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            y<sub>i</sub> (mm)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            &theta;<sub>i</sub> (&deg;)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            E<sub>i,XX</sub> (MPa)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            h<sub>i</sub> (mm)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100 last:rounded-tr-[10px]"
+                                        >
+                                            G<sub>i</sub> (MPa)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sectionPropsBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shear Analogy Section -->
+                <div
+                    id="shearAnalogySection"
+                    class="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.06)] border border-black/5 mb-4"
+                    style="display: none"
+                >
+                    <div
+                        class="px-5 py-3.5 border-b border-black/5 flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-3.5 h-3.5 text-wood-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                            />
+                        </svg>
+                        <span
+                            class="text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                            >Shear Analogy</span
+                        >
+                        <span
+                            class="ml-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-wood-100 text-wood-700"
+                            >proHolz 4.1.3</span
+                        >
+                    </div>
+                    <div class="p-0">
+                        <div class="overflow-x-auto">
+                            <table
+                                class="w-full border-separate border-spacing-0"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100 first:rounded-tl-[10px]"
+                                        >
+                                            [-]
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            b<sub>eff</sub>&middot;t<sub>i</sub>&sup3;/12
+                                            (mm&sup4;)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            t<sub>i</sub>&middot;b<sub>eff</sub>&middot;h<sub>i</sub>&sup2;
+                                            (mm&sup4;)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            E<sub>i,XX</sub> (MPa)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100 last:rounded-tr-[10px]"
+                                        >
+                                            E<sub>i</sub>I<sub>i</sub>
+                                            (N&middot;mm&sup2;/m)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="shearTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gamma Section -->
+                <div
+                    id="gammaSection"
+                    class="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.06)] border border-black/5 mb-4"
+                    style="display: none"
+                >
+                    <div
+                        class="px-5 py-3.5 border-b border-black/5 flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-3.5 h-3.5 text-wood-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"
+                            />
+                        </svg>
+                        <span
+                            class="text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                            >Gamma Method</span
+                        >
+                        <span
+                            class="ml-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-wood-100 text-wood-700"
+                            >proHolz 4.2</span
+                        >
+                    </div>
+                    <div class="p-0">
+                        <div class="overflow-x-auto">
+                            <table
+                                class="w-full border-separate border-spacing-0"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100 first:rounded-tl-[10px]"
+                                        >
+                                            [-]
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            E<sub>i,XX</sub> (MPa)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            a<sub>i</sub> (mm)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            b<sub>eff</sub>&middot;t<sub>i</sub>&sup3;/12
+                                            (mm&sup4;)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            b<sub>eff</sub>&middot;t<sub>i</sub>&middot;a<sub>i</sub>&sup2;
+                                            (mm&sup4;)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100"
+                                        >
+                                            &gamma;<sub>i</sub> (-)
+                                        </th>
+                                        <th
+                                            class="px-3.5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-left bg-gray-50/80 border-b border-gray-100 last:rounded-tr-[10px]"
+                                        >
+                                            EI<sub>eff</sub>
+                                            (N&middot;mm&sup2;/m)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gammaTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center py-5">
+                <p
+                    class="text-[10px] text-gray-300 font-medium uppercase tracking-wider"
+                >
+                    CLT Floor Panel Properties Calculator &mdash; proHolz Vol1 &copy; Hyanz
+                </p>
+            </div>
+        </div>
+
+        <script src="type/material-grade-type.js"></script>
+        <script src="type/clt-layer-type.js"></script>
+        <script src="type/clt-layup-type.js"></script>
+        <script src="type/clt-layer-properties-type.js"></script>
+        <script src="type/panel-properties-type.js"></script>
+        <script src="calculation/panel-properties.js"></script>
+        <script src="calculator.js"></script>
+    </body>
 </html>
